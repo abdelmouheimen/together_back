@@ -1,0 +1,23 @@
+# Build output
+target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# Maven wrapper jar (keep .properties)
+.mvn/wrapper/maven-wrapper.jar
+
+# Environment secrets
+.env
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

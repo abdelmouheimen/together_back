@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    show-sql: false
+  liquibase:
+    drop-first: false
+
+logging:
+  level:
+    com.together: INFO
+    org.springframework.security: WARN

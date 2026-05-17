@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: together-backend
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5439/together}
+    username: ${DB_USERNAME:together}
+    password: ${DB_PASSWORD:together}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        default_schema: public
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  port: ${PORT:8080}
+
+jwt:
+  secret: ${JWT_SECRET:change-me-in-production-min-256-bits-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+  access-token-expiration: 900
+  refresh-token-expiration: 2592000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    com.together: INFO
+    org.springframework.security: WARN

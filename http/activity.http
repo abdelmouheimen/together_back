@@ -1,0 +1,16 @@
+### Get global activity feed
+GET {{baseUrl}}/api/activity
+Authorization: Bearer {{accessToken}}
+
+### Get activity feed (page 2)
+GET {{baseUrl}}/api/activity?page=1&size=20
+Authorization: Bearer {{accessToken}}
+
+### Get activity for a specific list
+# Run lists.http > Create a list first to get listId
+GET {{baseUrl}}/api/activity/lists/{{listId}}
+Authorization: Bearer {{accessToken}}
+
+### Get activity for a specific list (page 2)
+GET {{baseUrl}}/api/activity/lists/{{listId}}?page=1&size=10
+Authorization: Bearer {{accessToken}}

@@ -1,0 +1,80 @@
+### Create an item
+# Run lists.http > Create a list first to get listId
+POST {{baseUrl}}/api/lists/{{listId}}/items
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "text": "Acheter du pain"
+}
+
+> {%
+  client.global.set("itemId", response.body.id);
+%}
+
+### Create a second item
+POST {{baseUrl}}/api/lists/{{listId}}/items
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "text": "Acheter du lait"
+}
+
+> {%
+  client.global.set("itemId2", response.body.id);
+%}
+
+### Create a third item
+POST {{baseUrl}}/api/lists/{{listId}}/items
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "text": "Acheter des œufs"
+}
+
+### Get all items of a list
+GET {{baseUrl}}/api/lists/{{listId}}/items
+Authorization: Bearer {{accessToken}}
+
+### Update item text
+PUT {{baseUrl}}/api/lists/{{listId}}/items/{{itemId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "text": "Acheter du pain complet"
+}
+
+### Toggle item done
+PATCH {{baseUrl}}/api/lists/{{listId}}/items/{{itemId}}/toggle
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "done": true
+}
+
+### Toggle item undone
+PATCH {{baseUrl}}/api/lists/{{listId}}/items/{{itemId}}/toggle
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "done": false
+}
+
+### Reorder items
+PATCH {{baseUrl}}/api/lists/{{listId}}/items/reorder
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+[
+  { "id": "{{itemId}}", "position": 2 },
+  { "id": "{{itemId2}}", "position": 1 }
+]
+
+### Delete item
+DELETE {{baseUrl}}/api/lists/{{listId}}/items/{{itemId}}
+Authorization: Bearer {{accessToken}}

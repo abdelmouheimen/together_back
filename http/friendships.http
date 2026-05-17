@@ -1,0 +1,53 @@
+### Send friend request to Bob
+# Run auth.http > Login as Alice first to get accessToken and bobId
+POST {{baseUrl}}/api/friendships
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "addresseeId": "{{bobId}}"
+}
+
+> {%
+  client.global.set("friendshipId", response.body.id);
+%}
+
+### Get my friendships (accepted)
+GET {{baseUrl}}/api/friendships
+Authorization: Bearer {{accessToken}}
+
+### Get pending friend requests
+GET {{baseUrl}}/api/friendships/requests
+Authorization: Bearer {{accessToken}}
+
+### Accept friend request
+# Login as Bob first, then use the friendshipId
+PUT {{baseUrl}}/api/friendships/{{friendshipId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "ACCEPTED"
+}
+
+### Decline friend request
+PUT {{baseUrl}}/api/friendships/{{friendshipId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "DECLINED"
+}
+
+### Block a friendship
+PUT {{baseUrl}}/api/friendships/{{friendshipId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "BLOCKED"
+}
+
+### Delete friendship
+DELETE {{baseUrl}}/api/friendships/{{friendshipId}}
+Authorization: Bearer {{accessToken}}

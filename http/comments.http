@@ -1,0 +1,30 @@
+### Add a comment to an item
+# Run items.http > Create an item first to get listId and itemId
+POST {{baseUrl}}/api/lists/{{listId}}/items/{{itemId}}/comments
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "text": "N'oublie pas le pain sans gluten !"
+}
+
+> {%
+  client.global.set("commentId", response.body.id);
+%}
+
+### Add a second comment
+POST {{baseUrl}}/api/lists/{{listId}}/items/{{itemId}}/comments
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "text": "Je m'en occupe ce soir."
+}
+
+### Get all comments of an item
+GET {{baseUrl}}/api/lists/{{listId}}/items/{{itemId}}/comments
+Authorization: Bearer {{accessToken}}
+
+### Delete a comment
+DELETE {{baseUrl}}/api/lists/{{listId}}/items/{{itemId}}/comments/{{commentId}}
+Authorization: Bearer {{accessToken}}

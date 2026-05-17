@@ -1,0 +1,63 @@
+### Register user Alice
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "alice@example.com",
+  "password": "password123",
+  "name": "Alice Martin",
+  "avatarColor": "#FF6B6B"
+}
+
+> {%
+  client.global.set("accessToken", response.body.accessToken);
+  client.global.set("refreshToken", response.body.refreshToken);
+  client.global.set("aliceId", response.body.user.id);
+%}
+
+### Register user Bob
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "bob@example.com",
+  "password": "password123",
+  "name": "Bob Dupont",
+  "avatarColor": "#4ECDC4"
+}
+
+> {%
+  client.global.set("bobId", response.body.user.id);
+%}
+
+### Login as Alice
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "alice@example.com",
+  "password": "password123"
+}
+
+> {%
+  client.global.set("accessToken", response.body.accessToken);
+  client.global.set("refreshToken", response.body.refreshToken);
+  client.global.set("aliceId", response.body.user.id);
+%}
+
+### Refresh token
+POST {{baseUrl}}/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+> {%
+  client.global.set("accessToken", response.body.accessToken);
+  client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+### Logout
+POST {{baseUrl}}/api/auth/logout
+Authorization: Bearer {{accessToken}}

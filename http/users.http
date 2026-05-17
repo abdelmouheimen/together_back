@@ -1,0 +1,21 @@
+### Get current user (me)
+GET {{baseUrl}}/api/users/me
+Authorization: Bearer {{accessToken}}
+
+### Update current user
+PUT {{baseUrl}}/api/users/me
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Alice M.",
+  "avatarColor": "#A29BFE"
+}
+
+### Search users by name or email
+GET {{baseUrl}}/api/users/search?q=bob
+Authorization: Bearer {{accessToken}}
+
+### Search users with pagination
+GET {{baseUrl}}/api/users/search?q=alice&page=0&size=10
+Authorization: Bearer {{accessToken}}

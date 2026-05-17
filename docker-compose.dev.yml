@@ -1,0 +1,18 @@
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      target: builder
+    volumes:
+      - ./src:/app/src
+      - ./pom.xml:/app/pom.xml
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    command: ["./mvnw", "spring-boot:run", "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]

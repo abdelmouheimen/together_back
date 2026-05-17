@@ -1,0 +1,66 @@
+### Create a list
+POST {{baseUrl}}/api/lists
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Courses de la semaine",
+  "emoji": "🛒",
+  "accentColor": "#FF6B6B",
+  "progressColor": "#FF8E8E",
+  "memberIds": []
+}
+
+> {%
+  client.global.set("listId", response.body.id);
+%}
+
+### Create a list with members
+POST {{baseUrl}}/api/lists
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Voyage à Paris",
+  "emoji": "✈️",
+  "accentColor": "#4ECDC4",
+  "progressColor": "#6BE8E0",
+  "memberIds": ["{{bobId}}"]
+}
+
+### Get all my lists
+GET {{baseUrl}}/api/lists
+Authorization: Bearer {{accessToken}}
+
+### Get list by ID
+GET {{baseUrl}}/api/lists/{{listId}}
+Authorization: Bearer {{accessToken}}
+
+### Update list
+PUT {{baseUrl}}/api/lists/{{listId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Courses du weekend",
+  "emoji": "🛍️",
+  "accentColor": "#A29BFE",
+  "progressColor": "#BDB3FF"
+}
+
+### Add member to list
+POST {{baseUrl}}/api/lists/{{listId}}/members
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "userId": "{{bobId}}"
+}
+
+### Remove member from list
+DELETE {{baseUrl}}/api/lists/{{listId}}/members/{{bobId}}
+Authorization: Bearer {{accessToken}}
+
+### Delete list
+DELETE {{baseUrl}}/api/lists/{{listId}}
+Authorization: Bearer {{accessToken}}

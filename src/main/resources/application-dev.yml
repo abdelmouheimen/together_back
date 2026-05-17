@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    drop-first: true
+
+logging:
+  level:
+    com.together: DEBUG
+    org.springframework.security: DEBUG
