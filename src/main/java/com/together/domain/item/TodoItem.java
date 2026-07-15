@@ -24,6 +24,10 @@ public class TodoItem {
     @Column(nullable = false)
     private boolean done = false;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ItemCategory category = ItemCategory.OTHER;
+
     @ManyToOne
     @JoinColumn(name = "checked_by_id")
     private User checkedBy;
@@ -53,6 +57,9 @@ public class TodoItem {
 
     public boolean isDone() { return done; }
     public void setDone(boolean done) { this.done = done; }
+
+    public ItemCategory getCategory() { return category; }
+    public void setCategory(ItemCategory category) { this.category = category; }
 
     public User getCheckedBy() { return checkedBy; }
     public void setCheckedBy(User checkedBy) { this.checkedBy = checkedBy; }

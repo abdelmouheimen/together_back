@@ -36,6 +36,12 @@ public class FriendshipController {
         return friendshipService.getPendingRequests(SecurityUtils.currentUser());
     }
 
+    @GetMapping("/requests/sent")
+    @Operation(summary = "Get friend requests sent by the current user")
+    public List<FriendshipDto> getSentRequests() {
+        return friendshipService.getSentRequests(SecurityUtils.currentUser());
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Send a friend request")
@@ -45,7 +51,7 @@ public class FriendshipController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Accept or decline a friend request")
-    public FriendshipDto updateFriendship(@PathVariable UUID id,
+    public FriendshipDto updateFriendship(@PathVariable("id") UUID id,
                                           @Valid @RequestBody UpdateFriendshipRequest request) {
         return friendshipService.updateFriendship(SecurityUtils.currentUser(), id, request);
     }
@@ -53,7 +59,7 @@ public class FriendshipController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Remove a friendship")
-    public void deleteFriendship(@PathVariable UUID id) {
+    public void deleteFriendship(@PathVariable("id") UUID id) {
         friendshipService.deleteFriendship(SecurityUtils.currentUser(), id);
     }
 }

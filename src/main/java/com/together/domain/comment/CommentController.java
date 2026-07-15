@@ -25,15 +25,15 @@ public class CommentController {
 
     @GetMapping
     @Operation(summary = "Get comments for an item")
-    public List<CommentDto> getComments(@PathVariable UUID listId, @PathVariable UUID itemId) {
+    public List<CommentDto> getComments(@PathVariable("listId") UUID listId, @PathVariable("itemId") UUID itemId) {
         return commentService.getComments(SecurityUtils.currentUser(), listId, itemId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add a comment to an item")
-    public CommentDto createComment(@PathVariable UUID listId,
-                                    @PathVariable UUID itemId,
+    public CommentDto createComment(@PathVariable("listId") UUID listId,
+                                    @PathVariable("itemId") UUID itemId,
                                     @Valid @RequestBody CreateCommentRequest request) {
         return commentService.create(SecurityUtils.currentUser(), listId, itemId, request);
     }
@@ -41,9 +41,9 @@ public class CommentController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete a comment (author only)")
-    public void deleteComment(@PathVariable UUID listId,
-                               @PathVariable UUID itemId,
-                               @PathVariable UUID id) {
+    public void deleteComment(@PathVariable("listId") UUID listId,
+                               @PathVariable("itemId") UUID itemId,
+                               @PathVariable("id") UUID id) {
         commentService.delete(SecurityUtils.currentUser(), listId, itemId, id);
     }
 }

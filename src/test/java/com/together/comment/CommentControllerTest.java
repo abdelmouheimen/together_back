@@ -38,12 +38,12 @@ class CommentControllerTest extends AbstractIntegrationTest {
                 "/api/auth/register", reg, AuthResponse.class);
         token = resp.getBody().accessToken();
 
-        CreateListRequest listReq = new CreateListRequest("Comment List", "💬", "#EEF2FF", "#4A3ABA", List.of());
+        CreateListRequest listReq = new CreateListRequest("Comment List", "💬", "#EEF2FF", "#4A3ABA", List.of(), null);
         ResponseEntity<TodoListDto> listResp = restTemplate.postForEntity(
                 "/api/lists", new HttpEntity<>(listReq, bearerHeaders()), TodoListDto.class);
         listId = listResp.getBody().id().toString();
 
-        CreateItemRequest itemReq = new CreateItemRequest("Item to comment on");
+        CreateItemRequest itemReq = new CreateItemRequest("Item to comment on", null);
         ResponseEntity<TodoItemDto> itemResp = restTemplate.postForEntity(
                 "/api/lists/" + listId + "/items",
                 new HttpEntity<>(itemReq, bearerHeaders()), TodoItemDto.class);

@@ -62,6 +62,7 @@ public class TodoItemService {
         TodoItem item = new TodoItem();
         item.setList(list);
         item.setText(request.text());
+        item.setCategory(request.category() != null ? request.category() : ItemCategory.OTHER);
         item.setPosition(maxPosition + 1);
         item.setCreatedBy(currentUser);
         item.setCreatedAt(Instant.now());
@@ -145,6 +146,7 @@ public class TodoItemService {
                 item.getId(),
                 item.getText(),
                 item.isDone(),
+                item.getCategory(),
                 item.getCheckedBy() != null ? UserMapper.toDto(item.getCheckedBy()) : null,
                 item.getCheckedAt(),
                 item.getPosition(),

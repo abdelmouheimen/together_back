@@ -9,5 +9,6 @@ public record CreateListRequest(
         @NotBlank String emoji,
         @NotBlank String accentColor,
         @NotBlank String progressColor,
-        List<UUID> memberIds
+        List<UUID> memberIds,
+        UUID parentId
 ) {}

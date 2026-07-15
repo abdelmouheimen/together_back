@@ -31,6 +31,10 @@ public class TodoList {
     @JoinColumn(name = "created_by_id")
     private User createdBy;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private TodoList parent;
+
     @ManyToMany
     @JoinTable(
         name = "list_members",
@@ -63,6 +67,9 @@ public class TodoList {
 
     public User getCreatedBy() { return createdBy; }
     public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
+
+    public TodoList getParent() { return parent; }
+    public void setParent(TodoList parent) { this.parent = parent; }
 
     public Set<User> getMembers() { return members; }
     public void setMembers(Set<User> members) { this.members = members; }

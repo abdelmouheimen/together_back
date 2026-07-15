@@ -23,17 +23,17 @@ public class ActivityEventController {
     @GetMapping
     @Operation(summary = "Get activity feed for current user")
     public PageResponse<ActivityEventDto> getActivity(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size) {
         return activityEventService.getForUser(SecurityUtils.currentUser(), page, size);
     }
 
     @GetMapping("/lists/{listId}")
     @Operation(summary = "Get activity feed for a specific list")
     public PageResponse<ActivityEventDto> getListActivity(
-            @PathVariable UUID listId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @PathVariable("listId") UUID listId,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size) {
         return activityEventService.getForList(SecurityUtils.currentUser(), listId, page, size);
     }
 }

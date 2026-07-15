@@ -55,14 +55,18 @@ public class TodoListService {
         list.setCreatedBy(currentUser);
         list.setCreatedAt(Instant.now());
 
-        list.getMembers().add(currentUser);
+        if (request.parentId() != null) {
+            TodoList parent = findAndCheckMembership(currentUser, request.parentId());
+            list.setParent(parent);
+            parent.getMembers().forEach(m -> addMemberIfAbsent(list, m));
+        }
+
+        addMemberIfAbsent(list, currentUser);
         var memberIds = request.memberIds() != null ? request.memberIds() : java.util.List.<UUID>of();
         for (UUID memberId : memberIds) {
-            if (!memberId.equals(currentUser.getId())) {
-                User member = userRepository.findById(memberId)
-                        .orElseThrow(() -> new ResourceNotFoundException("User not found: " + memberId));
-                list.getMembers().add(member);
-            }
+            User member = userRepository.findById(memberId)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found: " + memberId));
+            addMemberIfAbsent(list, member);
         }
 
         todoListRepository.save(list);
@@ -108,7 +112,7 @@ public class TodoListService {
         TodoList list = findAndCheckMembership(currentUser, listId);
         User newMember = userRepository.findById(request.userId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + request.userId()));
-        list.getMembers().add(newMember);
+        addMemberIfAbsent(list, newMember);
         list.setUpdatedAt(Instant.now());
         todoListRepository.save(list);
         return toDto(list);
@@ -134,6 +138,16 @@ public class TodoListService {
         return list;
     }
 
+    // User has no equals/hashCode override, so Set<User> can hold two instances
+    // of the same row — dedupe by id to avoid duplicate list_members inserts.
+    private void addMemberIfAbsent(TodoList list, User user) {
+        boolean present = list.getMembers().stream()
+                .anyMatch(m -> m.getId().equals(user.getId()));
+        if (!present) {
+            list.getMembers().add(user);
+        }
+    }
+
     private TodoList findById(UUID id) {
         return todoListRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("List not found: " + id));
@@ -154,6 +168,7 @@ public class TodoListService {
                 total,
                 done,
                 progress,
+                list.getParent() != null ? list.getParent().getId() : null,
                 list.getCreatedAt()
         );
     }

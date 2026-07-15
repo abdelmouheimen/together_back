@@ -11,5 +11,7 @@
     <include file="db/changelog/004_create_items.sql"/>
     <include file="db/changelog/005_create_comments.sql"/>
     <include file="db/changelog/006_create_activity_events.sql"/>
+    <include file="db/changelog/007_add_item_category.sql"/>
+    <include file="db/changelog/008_add_list_parent.sql"/>
 
 </databaseChangeLog>

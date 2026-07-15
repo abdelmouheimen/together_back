@@ -28,30 +28,30 @@ public class TodoItemController {
 
     @GetMapping
     @Operation(summary = "Get all items for a list")
-    public List<TodoItemDto> getItems(@PathVariable UUID listId) {
+    public List<TodoItemDto> getItems(@PathVariable("listId") UUID listId) {
         return todoItemService.getItems(SecurityUtils.currentUser(), listId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add an item to a list")
-    public TodoItemDto createItem(@PathVariable UUID listId,
+    public TodoItemDto createItem(@PathVariable("listId") UUID listId,
                                   @Valid @RequestBody CreateItemRequest request) {
         return todoItemService.create(SecurityUtils.currentUser(), listId, request);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update item text")
-    public TodoItemDto updateItem(@PathVariable UUID listId,
-                                  @PathVariable UUID id,
+    public TodoItemDto updateItem(@PathVariable("listId") UUID listId,
+                                  @PathVariable("id") UUID id,
                                   @Valid @RequestBody UpdateItemRequest request) {
         return todoItemService.update(SecurityUtils.currentUser(), listId, id, request);
     }
 
     @PatchMapping("/{id}/toggle")
     @Operation(summary = "Toggle item done/undone")
-    public TodoItemDto toggleItem(@PathVariable UUID listId,
-                                  @PathVariable UUID id,
+    public TodoItemDto toggleItem(@PathVariable("listId") UUID listId,
+                                  @PathVariable("id") UUID id,
                                   @RequestBody ToggleItemRequest request) {
         return todoItemService.toggle(SecurityUtils.currentUser(), listId, id, request);
     }
@@ -59,14 +59,14 @@ public class TodoItemController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete an item")
-    public void deleteItem(@PathVariable UUID listId, @PathVariable UUID id) {
+    public void deleteItem(@PathVariable("listId") UUID listId, @PathVariable("id") UUID id) {
         todoItemService.delete(SecurityUtils.currentUser(), listId, id);
     }
 
     @PatchMapping("/reorder")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Reorder items")
-    public void reorderItems(@PathVariable UUID listId,
+    public void reorderItems(@PathVariable("listId") UUID listId,
                               @RequestBody List<ReorderItemRequest> requests) {
         todoItemService.reorder(SecurityUtils.currentUser(), listId, requests);
     }

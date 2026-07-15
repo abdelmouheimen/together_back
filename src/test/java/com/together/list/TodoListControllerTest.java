@@ -42,7 +42,7 @@ class TodoListControllerTest extends AbstractIntegrationTest {
 
     @Test
     void create_and_get_list() {
-        CreateListRequest req = new CreateListRequest("Shopping", "🛒", "#EEF2FF", "#4A3ABA", List.of());
+        CreateListRequest req = new CreateListRequest("Shopping", "🛒", "#EEF2FF", "#4A3ABA", List.of(), null);
         HttpEntity<CreateListRequest> entity = new HttpEntity<>(req, bearerHeaders(token));
 
         ResponseEntity<TodoListDto> createResp = restTemplate.postForEntity(
@@ -62,7 +62,7 @@ class TodoListControllerTest extends AbstractIntegrationTest {
 
     @Test
     void access_list_as_non_member_returns_403() {
-        CreateListRequest req = new CreateListRequest("Private List", "📋", "#EEF2FF", "#4A3ABA", List.of());
+        CreateListRequest req = new CreateListRequest("Private List", "📋", "#EEF2FF", "#4A3ABA", List.of(), null);
         ResponseEntity<TodoListDto> createResp = restTemplate.postForEntity(
                 "/api/lists", new HttpEntity<>(req, bearerHeaders(token)), TodoListDto.class);
 

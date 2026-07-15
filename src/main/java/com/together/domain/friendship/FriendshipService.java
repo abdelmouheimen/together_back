@@ -52,6 +52,12 @@ public class FriendshipService {
                 .stream().map(this::toDto).toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<FriendshipDto> getSentRequests(User currentUser) {
+        return friendshipRepository.findByRequesterOrderByCreatedAtDesc(currentUser)
+                .stream().map(this::toDto).toList();
+    }
+
     public FriendshipDto sendRequest(User requester, SendFriendRequestDto request) {
         User addressee = userRepository.findById(request.addresseeId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + request.addresseeId()));

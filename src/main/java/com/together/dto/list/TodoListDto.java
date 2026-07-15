@@ -15,5 +15,6 @@ public record TodoListDto(
         int totalItems,
         int doneItems,
         double progress,
+        UUID parentId,
         Instant createdAt
 ) {}

@@ -40,33 +40,33 @@ public class TodoListController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a list by ID")
-    public TodoListDto getList(@PathVariable UUID id) {
+    public TodoListDto getList(@PathVariable("id") UUID id) {
         return todoListService.getById(SecurityUtils.currentUser(), id);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a list")
-    public TodoListDto updateList(@PathVariable UUID id, @Valid @RequestBody UpdateListRequest request) {
+    public TodoListDto updateList(@PathVariable("id") UUID id, @Valid @RequestBody UpdateListRequest request) {
         return todoListService.update(SecurityUtils.currentUser(), id, request);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete a list (creator only)")
-    public void deleteList(@PathVariable UUID id) {
+    public void deleteList(@PathVariable("id") UUID id) {
         todoListService.delete(SecurityUtils.currentUser(), id);
     }
 
     @PostMapping("/{id}/members")
     @Operation(summary = "Add a member to a list")
-    public TodoListDto addMember(@PathVariable UUID id, @Valid @RequestBody AddMemberRequest request) {
+    public TodoListDto addMember(@PathVariable("id") UUID id, @Valid @RequestBody AddMemberRequest request) {
         return todoListService.addMember(SecurityUtils.currentUser(), id, request);
     }
 
     @DeleteMapping("/{id}/members/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Remove a member from a list (creator only)")
-    public void removeMember(@PathVariable UUID id, @PathVariable UUID userId) {
+    public void removeMember(@PathVariable("id") UUID id, @PathVariable("userId") UUID userId) {
         todoListService.removeMember(SecurityUtils.currentUser(), id, userId);
     }
 }

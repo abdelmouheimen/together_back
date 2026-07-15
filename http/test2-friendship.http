@@ -1,0 +1,48 @@
+### Register user test2
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test2@example.com",
+  "password": "password123",
+  "name": "Test Deux",
+  "avatarColor": "#FFA502"
+}
+
+> {%
+  client.global.set("test2AccessToken", response.body.accessToken);
+  client.global.set("test2RefreshToken", response.body.refreshToken);
+  client.global.set("test2Id", response.body.user.id);
+%}
+
+### Login as test2 (if already registered)
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test2@example.com",
+  "password": "password123"
+}
+
+> {%
+  client.global.set("test2AccessToken", response.body.accessToken);
+  client.global.set("test2RefreshToken", response.body.refreshToken);
+  client.global.set("test2Id", response.body.user.id);
+%}
+
+### Send friend request from test2 to the target user
+POST http://localhost:8080/api/friendships
+Authorization: Bearer {{test2AccessToken}}
+Content-Type: application/json
+
+{
+  "addresseeId": "3b5069ef-4033-4bb1-a625-bf29ee8dc17b"
+}
+
+> {%
+  client.global.set("test2FriendshipId", response.body.id);
+%}
+
+### Check pending requests sent (as target user, run auth.http login first)
+GET http://localhost:8080/api/friendships/requests
+Authorization: Bearer {{accessToken}}

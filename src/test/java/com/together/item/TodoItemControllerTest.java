@@ -2,6 +2,7 @@ package com.together.item;
 
 import com.together.AbstractIntegrationTest;
 import com.together.domain.activity.ActivityEventRepository;
+import com.together.domain.item.ItemCategory;
 import com.together.dto.auth.AuthResponse;
 import com.together.dto.auth.RegisterRequest;
 import com.together.dto.item.CreateItemRequest;
@@ -40,7 +41,7 @@ class TodoItemControllerTest extends AbstractIntegrationTest {
                 "/api/auth/register", reg, AuthResponse.class);
         token = resp.getBody().accessToken();
 
-        CreateListRequest listReq = new CreateListRequest("Test List", "📝", "#EEF2FF", "#4A3ABA", List.of());
+        CreateListRequest listReq = new CreateListRequest("Test List", "📝", "#EEF2FF", "#4A3ABA", List.of(), null);
         ResponseEntity<TodoListDto> listResp = restTemplate.postForEntity(
                 "/api/lists", new HttpEntity<>(listReq, bearerHeaders()), TodoListDto.class);
         listId = listResp.getBody().id().toString();
@@ -48,7 +49,7 @@ class TodoItemControllerTest extends AbstractIntegrationTest {
 
     @Test
     void create_item_and_toggle() {
-        CreateItemRequest req = new CreateItemRequest("Buy milk");
+        CreateItemRequest req = new CreateItemRequest("Buy milk", ItemCategory.TO_BUY);
         ResponseEntity<TodoItemDto> createResp = restTemplate.postForEntity(
                 "/api/lists/" + listId + "/items",
                 new HttpEntity<>(req, bearerHeaders()), TodoItemDto.class);
@@ -56,6 +57,7 @@ class TodoItemControllerTest extends AbstractIntegrationTest {
         assertThat(createResp.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(createResp.getBody().text()).isEqualTo("Buy milk");
         assertThat(createResp.getBody().done()).isFalse();
+        assertThat(createResp.getBody().category()).isEqualTo(ItemCategory.TO_BUY);
 
         String itemId = createResp.getBody().id().toString();
         long eventsBefore = activityEventRepository.count();
